@@ -1,0 +1,26 @@
+This code is designed to detect vehicles (specifically cars, buses, and trucks) in an image and then update a pixel matrix to turn off pixels above the detected vehicles' headlights. The code consists of two main functions:
+
+1. detect_vehicles_dnn : This function uses a pre-trained Deep Neural Network (DNN) model to detect vehicles in a given image frame.
+
+   - The image is first pre-processed into a blob suitable for input into the neural network.
+   - The neural network (`net`) processes the blob to detect objects in the frame.
+   - The function then iterates through these detections, filtering out those with a confidence level above a set threshold (0.1).
+   - For each detection, if the detected object is classified as a bus, car, or truck (based on their COCO dataset class IDs: 2 for cars, 5 for buses, and 7 for trucks), its bounding box is calculated and stored.
+   - The function returns a list of bounding boxes, each representing a detected vehicle.
+
+2. update_headlight_matrix : This function updates a pixel matrix based on the positions of detected vehicles.
+
+   - The function first determines the size of individual "pixels" in the matrix relative to the image frame.
+   - For each detected vehicle, the function calculates the region that represents the top half of the vehicle (above the midpoint of its vertical dimension).
+   - The corresponding pixels in the pixel matrix for this region are then set to '0', which could represent turning off LEDs or changing their state in some way.
+
+The code is specifically tailored to identify and act upon the upper section of the vehicles, possibly due to the nature of the headlights being located generally in the lower half of the vehicles' front side.
+
+import cv2
+import pandas as pd
+import numpy as np
+import math, csv
+
+github link for the model repo: https://github.com/chuanqi305/MobileNet-SSD
+(download and extract)
+
